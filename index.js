@@ -82,6 +82,8 @@ const existingLog = async () => {
 // Create Function to handle requests from the backend
 const requestApi = async (SINCE, UNTIL, METHOD) => {
 
+    let res = [];
+    try {
         const options = {
             url: `https://api.github.com/users/${GITHUB_USERNAME}/gists?since=${SINCE}&until=${UNTIL}`,
             method: METHOD,
@@ -91,9 +93,14 @@ const requestApi = async (SINCE, UNTIL, METHOD) => {
             },
         };
         res = await axios(options);
-        return res.data;
+        res = res.data;
+    }
+    catch (e) {
+       console.log(`Gists not found with this username: ${GITHUB_USERNAME}`)
+    }
+    
+    return res;
 }
 
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))
-
